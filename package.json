@@ -1,0 +1,36 @@
+{
+  "name": "react-on-flickr",
+  "version": "1.0.0",
+  "description": "Sample project to get into ReactJS and Webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Devgaze/react-on-flickr.git"
+  },
+  "keywords": [
+    "reactjs",
+    "webpack",
+    "flickr"
+  ],
+  "author": "Devgaze",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Devgaze/react-on-flickr/issues"
+  },
+  "homepage": "https://github.com/Devgaze/react-on-flickr",
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
+  },
+  "devDependencies": {
+    "babel-core": "^6.5.2",
+    "babel-loader": "^6.2.3",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
