@@ -11,9 +11,9 @@ It is a simple app that allows you to see latest 20 uploads to Flickr.
 
 2. Then install all the packages and run development server
 
-```bash
-npm install && webpack-dev-server
-```
+    ```bash
+    npm install && webpack-dev-server
+    ```
 
 3. Visit `http://localhost:8080/webpack-dev-server/` and then click on `public`
 
@@ -21,9 +21,9 @@ npm install && webpack-dev-server
 
 1. Generate production version of `bundle.js`
 
-```bash
-webpack -p
-```
+    ```bash
+    webpack -p
+    ```
 
 2. Transfer your complete `public` folder to your web server location
 
