@@ -30,24 +30,26 @@ It is a simple app that allows you to see latest 20 uploads to Flickr.
 Et voilà!
 
 ## Project structure
-
+```
+.
 ├── app
-|  ├── components
-|  |  ├── Main.js
-|  ├── utils.js
+│   ├── components
+│   │   └── Main.js
+│   └── utils.js
 ├── public
-|  ├── css
-|  |  ├── styles.css
-|  ├── images
-|  |  ├── spinner.gif
-|  ├── js
-|  |  ├── bundle.js
-|  ├── index.html
-├── .gitingore
+│   ├── css
+│   │   └── styles.css
+│   ├── images
+│   │   └── spinner.gif
+│   ├── js
+│   │   └── bundle.js
+│   └── index.html
 ├── LICENSE
-├── packages.json
 ├── README.md
-├── webpack.config.js
+├── package.json
+└── webpack.config.js
+
+```
 
 ## TODO
 
