@@ -3,6 +3,7 @@ Sample project to get into ReactJS and Webpack.
 
 ## Description
 It is a simple app that allows you to see latest 20 uploads to Flickr. 
+See the [DEMO](http://devgaze.github.io/demo/reactjs-on-flickr/)
 
 
 ## How to use it in your project
