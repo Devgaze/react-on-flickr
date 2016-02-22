@@ -39,41 +39,129 @@ var jsonp = {
     }
 }
 
-var Main = React.createClass({
+//  Thank you http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+// Use the browser's built-in functionality to quickly and safely escape the
+// string
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
 
+// UNSAFE with unsafe strings; only use on previously-escaped ones!
+function unescapeHtml(escapedStr) {
+    var div = document.createElement('div');
+    div.innerHTML = escapedStr;
+    var child = div.childNodes[0];
+    return child ? child.nodeValue : '';
+};
+
+
+var PhotoFeed = React.createClass({
+
+  
   getInitialState: function() {
-    
+  
     return {
-    
-      state: 'idle',
-      images: <li>No images yet.</li>
-    
+  
+      photos: [],
+      title: ''
+  
     };
   
+  },
+  
+  digestSearchResults: function(data) {
+    
+    this.setState({
+  
+      photos: data.items,
+      title: data.title
+  
+    });
+  
+  },
+  
+
+  render: function(){
+
+    var items = this.state.photos.map(function(item, i) {
+
+      return <Photo image={item} key={i} />;
+    
+    });
+
+    return (
+
+      <div className="row">
+        <div className="col-xs-12">
+          <div className="row">
+            <div className="col-xs-12">
+              <SearchForm updateResults={this.digestSearchResults} />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-12 flex-list">
+              {items}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    )
+    
+  }
+
+});
+
+
+var Photo = React.createClass({
+
+  render: function(){
+    
+    var image = this.props.image;
+    var index = this.props.index;
+    var description = escapeHtml(image.description);
+    description = unescapeHtml(description);
+    
+    return (
+      
+      <div className="col-xs-12 col-sm-5 col-sm-offset-2 col-md-3 col-md-offset-0 col-lg-2 flex-item">
+        <img src={image.media.m} alt={image.author} title={image.author} className="img-responsive" />
+        {unescapeHtml}
+      </div>
+
+    );
+    
+
+  }
+
+});
+
+
+
+var SearchForm = React.createClass({
+
+  getInitialState: function() {
+
+    return {value: 'Hello!'};
+
   },
 
   callAPI: function( url ){
 
-    var self = this;
+    var self = this,
+        updateResults = this.props.updateResults;
 
     jsonp.fetch(url, function(response) {
 
-      self.setState({
-
-        state: 'idle',
-        images: response.items.map(function(image){
-
-          return (<li><img src="{image.link}" alt="{image.author}" />{image.description}</li>)
-
-        })
-
-      });
+      updateResults(response);
 
     });
 
   },
 
-  getInspired: function( e ) {
+  handleChange: function( e ) {
     
     e.preventDefault();
     
@@ -84,20 +172,36 @@ var Main = React.createClass({
   
   },
 
+  render: function() {
+
+    return (
+      <section id="searchFormContainer">
+        <div className="row">
+          <div className="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+            <form onSubmit={ this.handleChange }>
+              <div className="form-group">
+                <input type="text" value={this.state.searchTerm} placeholder="what interest you" ref="interest" className="form-control" /> &nbsp;
+                <input type="submit" value="Get inspired" className="form-control btn btn-info" /> &nbsp;
+              </div>  
+            </form>
+          </div>
+        </div>
+      </section>
+
+    )
+  
+  }
+
+});
+
+
+var Main = React.createClass({
+
   render: function(){
 
     return (
 
-      <section>
-        <form onSubmit={ this.getInspired }>
-          <div>
-            <input type="text" placeholder="what interest you" ref="interest" /> &nbsp;
-            <input type="submit" value="Get inspired" /> &nbsp;
-            <span>{this.state.data}</span>
-          </div>  
-        </form>
-        <ul>{this.state.images}</ul>
-      </section>
+      <PhotoFeed />
 
     )
 
