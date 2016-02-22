@@ -1,64 +1,12 @@
 'use strict';
 
-
 var React = require('react');
 var ReactDom = require('react-dom');
+var utils = require('../utils');
 
-
-// Thanks to https://javascriptweblog.wordpress.com/2010/11/29/json-and-jsonp/
-var jsonp = {
-    callbackCounter: 0,
- 
-    fetch: function(url, callback) {
-        var fn = 'JSONPCallback_' + this.callbackCounter++;
-        window[fn] = this.evalJSONP(callback);
-        url = url.replace('=JSONPCallback', '=' + fn);
- 
-        var scriptTag = document.createElement('SCRIPT');
-        scriptTag.src = url;
-        document.getElementsByTagName('HEAD')[0].appendChild(scriptTag);
-    },
- 
-    evalJSONP: function(callback) {
-        return function(data) {
-            var validJSON = false;
-        if (typeof data == "string") {
-            try {validJSON = JSON.parse(data);} catch (e) {
-                /*invalid JSON*/}
-        } else {
-            validJSON = JSON.parse(JSON.stringify(data));
-                window.console && console.warn(
-                'response data was not a JSON string');
-            }
-            if (validJSON) {
-                callback(validJSON);
-            } else {
-                throw("JSONP call returned invalid or empty JSON");
-            }
-        }
-    }
-}
-
-//  Thank you http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
-// Use the browser's built-in functionality to quickly and safely escape the
-// string
-function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
-};
-
-// UNSAFE with unsafe strings; only use on previously-escaped ones!
-function unescapeHtml(escapedStr) {
-    var div = document.createElement('div');
-    div.innerHTML = escapedStr;
-    var child = div.childNodes[0];
-    return child ? child.nodeValue : '';
-};
 
 
 var PhotoFeed = React.createClass({
-
   
   getInitialState: function() {
   
@@ -101,6 +49,11 @@ var PhotoFeed = React.createClass({
             </div>
           </div>
           <div className="row">
+            <div className="col-xs-12">
+              <h3>{this.state.title}</h3>
+            </div>
+          </div>
+          <div className="row border-top">
             <div className="col-xs-12 flex-list">
               {items}
             </div>
@@ -121,14 +74,15 @@ var Photo = React.createClass({
     
     var image = this.props.image;
     var index = this.props.index;
-    var description = escapeHtml(image.description);
-    description = unescapeHtml(description);
+    var description = utils.escapeHtml(image.description);
+    description = utils.unescapeHtml(description);
     
     return (
       
       <div className="col-xs-12 col-sm-5 col-sm-offset-2 col-md-3 col-md-offset-0 col-lg-2 flex-item">
-        <img src={image.media.m} alt={image.author} title={image.author} className="img-responsive" />
-        {unescapeHtml}
+        <div>
+          <img src={image.media.m} alt={image.author} title={image.author} className="img-responsive" />
+        </div>
       </div>
 
     );
@@ -142,20 +96,29 @@ var Photo = React.createClass({
 
 var SearchForm = React.createClass({
 
+  spinnerSelector: 'ajax-loader',
+
   getInitialState: function() {
-
-    return {value: 'Hello!'};
-
+  
+    return {
+  
+      searchTerm: ''
+  
+    };
+  
   },
-
   callAPI: function( url ){
 
-    var self = this,
-        updateResults = this.props.updateResults;
+    var self            = this,
+        updateResults   = this.props.updateResults;
 
-    jsonp.fetch(url, function(response) {
+    utils.toggleSpinner(this.spinnerSelector);
+
+    utils.jsonp.fetch(url, function(response) {
 
       updateResults(response);
+
+      utils.toggleSpinner(self.spinnerSelector);
 
     });
 
@@ -178,9 +141,10 @@ var SearchForm = React.createClass({
       <section id="searchFormContainer">
         <div className="row">
           <div className="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-            <form onSubmit={ this.handleChange }>
+            <form id="searchForm" onSubmit={ this.handleChange }>
+              <div id={ this.spinnerSelector }></div>
               <div className="form-group">
-                <input type="text" value={this.state.searchTerm} placeholder="what interest you" ref="interest" className="form-control" /> &nbsp;
+                <input type="text" value={ this.state.searchTerm } placeholder="search what inspires you (ex. sailing, caribbean)" ref="interest" className="form-control" /> &nbsp;
                 <input type="submit" value="Get inspired" className="form-control btn btn-info" /> &nbsp;
               </div>  
             </form>

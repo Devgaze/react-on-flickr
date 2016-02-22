@@ -1,16 +1,48 @@
 #content
 {
   margin-top: 5em;
+  padding-bottom: 3em;
 }
 
 #searchFormContainer
 {
   margin-bottom: 5em;
 }
+  
+  #searchFormContainer #searchForm
+  {
+    position: relative;
+  }
+
+    #searchFormContainer #searchForm #ajax-loader
+    {
+      position:absolute;
+      width: 32px;
+      height: 32px;
+      right: -36px;
+      background: transparent url(../images/spinner.gif) center center no-repeat;
+      display: none;
+    }
+
+    #searchFormContainer #searchForm #ajax-loader.active
+    {
+      display: block;
+    }
 
 img 
 {
   padding-top: 1em;
+}
+
+h3
+{
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.border-top
+{
+  border-top: 1px solid rgba(100,100,100,.4);
 }
 
 .flex-list 
