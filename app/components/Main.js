@@ -73,7 +73,6 @@ var Photo = React.createClass({
   render: function(){
     
     var image = this.props.image;
-    var index = this.props.index;
     var description = utils.escapeHtml(image.description);
     description = utils.unescapeHtml(description);
     
@@ -98,15 +97,6 @@ var SearchForm = React.createClass({
 
   spinnerSelector: 'ajax-loader',
 
-  getInitialState: function() {
-  
-    return {
-  
-      searchTerm: ''
-  
-    };
-  
-  },
   callAPI: function( url ){
 
     var self            = this,
@@ -144,7 +134,7 @@ var SearchForm = React.createClass({
             <form id="searchForm" onSubmit={ this.handleChange }>
               <div id={ this.spinnerSelector }></div>
               <div className="form-group">
-                <input type="text" value={ this.state.searchTerm } placeholder="search what inspires you (ex. sailing, caribbean)" ref="interest" className="form-control" /> &nbsp;
+                <input type="text" placeholder="search what inspires you (ex. sailing, caribbean)" ref="interest" className="form-control" /> &nbsp;
                 <input type="submit" value="Get inspired" className="form-control btn btn-info" /> &nbsp;
               </div>  
             </form>
