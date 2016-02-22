@@ -17,6 +17,16 @@ npm install && webpack-dev-server
 
 3. Visit `http://localhost:8080/webpack-dev-server/` and then click on `public`
 
+### For production
+
+1. Generate production version of `bundle.js`
+
+```bash
+webpack -p
+```
+
+2. Transfer your complete `public` folder to your web server location
+
 Et voilà!
 
 ## Project structure
